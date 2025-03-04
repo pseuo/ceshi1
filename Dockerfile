@@ -1,21 +1,23 @@
-FROM python:3.9-slim
+FROM python:3.13 as py-builder
+WORKDIR /code
 
-# 设置工作目录
-WORKDIR /app
-
-# 复制必要的文件
-COPY requirements.txt .
-COPY main.py .
-COPY GeoLite2-City.mmdb .
-COPY GeoLite2-ASN.mmdb .
-COPY GeoCN.mmdb .
-COPY index.html .
-
-# 安装依赖
+COPY ./requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 暴露端口
-EXPOSE 7887
+FROM python:3.13-slim
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apt-get update && apt-get install -y curl procps && rm -rf /var/lib/apt/lists/*
 
-# 启动命令
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7887", "--no-server-header", "--proxy-headers"]
+WORKDIR /code
+
+COPY --from=py-builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
+COPY --from=py-builder /usr/local/bin /usr/local/bin
+
+COPY ./main.py .
+COPY ./update_and_restart.sh .
+RUN touch /code/ip_query.log && chmod 777 /code/ip_query.log
+RUN chmod -R 777 /code
+RUN chmod +x /code/update_and_restart.sh
+
+CMD ["sh", "/code/update_and_restart.sh"]
