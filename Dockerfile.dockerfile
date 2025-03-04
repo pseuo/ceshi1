@@ -9,6 +9,7 @@ COPY main.py .
 COPY GeoLite2-City.mmdb .
 COPY GeoLite2-ASN.mmdb .
 COPY GeoCN.mmdb .
+COPY index.html .
 
 # 安装依赖
 RUN pip install --no-cache-dir -r requirements.txt

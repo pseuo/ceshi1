@@ -252,9 +252,9 @@ async def path_api(request: Request, ip: str):
     logger.info(json.dumps(log_data, ensure_ascii=False))
     return result
 
-@app.get("/ipcha", response_class=FileResponse)
+@app.get("/ipcha", response_class=HTMLResponse)
 async def ipcha():
-    return FileResponse('/index.html')
+    return FileResponse("index.html")
 
 if __name__ == '__main__':
     query()

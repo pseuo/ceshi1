@@ -6,6 +6,8 @@ log() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> $LOG_FILE
 }
 
+log "Script started."
+
 while true; do
     log "Starting update process..."
     echo "Updating GeoLite2-City.mmdb..."
