@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "7887:7887"
+    volumes:
+      - .:/app
+    restart: always

@@ -1,0 +1,5 @@
+maxminddb
+fastapi
+uvicorn
+python-dotenv
+loguru
