@@ -1,18 +1,12 @@
-name: Docker Image CI
+version: '3.8'
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-jobs:
-
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dockerfile
+    ports:
+      - "7887:7887"
+    volumes:
+      - .:/app
+    restart: always
