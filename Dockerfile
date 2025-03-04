@@ -16,6 +16,7 @@ COPY --from=py-builder /usr/local/bin /usr/local/bin
 
 COPY ./main.py .
 COPY ./update_and_restart.sh .
+COPY ./dbip_reader.py .
 RUN touch /code/ip_query.log && chmod 777 /code/ip_query.log
 RUN chmod -R 777 /code
 RUN chmod +x /code/update_and_restart.sh
